@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ad Spend Audit Tool</title>
+  <link rel="shortcut icon" href="./assets/android-chrome-192x192.png" type="image/x-icon">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0 auto;
+      padding: 0;
+      /* background: linear-gradient(325deg, rgba(52, 184, 209, 1) 57%, rgba(39, 145, 199, 1) 93%); */
+      background-color: #34b7d1;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 50px;
+      max-width: 1200px;
+    }
+    /* .unicc{
+      position: absolute;
+      right: 0;
+      z-index: -999;
+    }
+    .diam{
+      position: absolute;
+      left: 0;
+      z-index: -999;
+    } */
+
+    .unicc,
+.diam {
+  position: absolute;
+  top: 0;              
+  opacity: 0.5;        
+  z-index: -1;        
+}
+
+.unicc {
+  right: 0;
+}
+
+.diam {
+  left: 0;
+}
+    h1 {
+      font-size: 3rem;
+      margin: 0.3rem 0 2rem;
+      text-align: center;
+    }
+    .input-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      width: 100%;
+      max-width: 500px;
+      margin: 40px auto 0 auto;
+      padding: 0 1rem;
+      box-sizing: border-box;
+    }
+    .input-btn div {
+      width: 100%;
+      max-width: 400px;
+    }
+  
+    input {
+      padding: 15px;
+      font-size: 1rem;
+      width: 100%;
+      border-radius: 12px;
+      border: none;
+      box-sizing: border-box;
+    }
+    label {
+  display: block;
+  margin-bottom: 6px; /* or adjust to your liking */
+  font-weight: 500;
+}
+    button {
+      background: #f9f9f9;
+      color: #2996C8;
+      border: 3px solid #f9f9f9;
+      font-size: 1.2rem;
+      padding: 10px 15px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      max-width: 400px;
+      box-sizing: border-box;
+    }
+    button img {
+      width: 30px;
+    }
+    button:hover {
+      border-color: #30A1DB;
+    }
+    #loading {
+      display: none;
+      margin-top: 1rem;
+      color: #ff0;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    .results {
+      margin-top: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+    .card {
+      background: #f9f9f9;
+      color: #333;
+      padding: 1rem;
+      border-radius: 15px;
+      min-width: 255px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      display: flex;
+      justify-content: space-around;
+      width: 320px;
+    }
+    .card h3 {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    .card strong {
+      display: block;
+      font-size: 1.5rem;
+      margin-top: 0.5rem;
+      color: black;
+    }
+    .card img {
+      width: 50px;
+    }
+    .card strong a {
+      color: black;
+      font-size: 0.8rem;
+    }
+    .card strong a:hover {
+      color: #2996C8;
+    }
+    .disc {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      padding: 0 1rem;
+    }
+    
+   
+select {
+  padding: 15px;
+  font-size: 1rem;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 12px;
+  border: none;
+  box-sizing: border-box;
+  appearance: none; 
+  background-color: white;
+  color: #333;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="gray" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+}
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.2rem;
+      }
+      .input-btn div {
+        width: 100%;
+        max-width: 300px;
+      }
+      button {
+        max-width: 300px;
+      }
+       select {
+    width: 100%;
+    font-size: 1rem;
+    padding: 12px;
+    border-radius: 10px;
+  }
+
+
+    .unicc,
+    .diam {
+    display: none;
+  }
+    }
+  </style>
+</head>
+<body>
+  <div class="unicc">
+    <img src="./assets/unic.png" alt="">
+  </div>
+  <div class="diam">
+    <img src="./assets/diamond.png" alt="">
+  </div>
+  <h1>Calculate Your Wasted Ads Spend</h1>
+
+
+
+ <div class="input-btn">
+  <div>
+    <label for="domain">Website URL</label>
+    <input type="text" id="domain" placeholder="www.website.com" />
+  </div>
+
+  <div>
+    <label for="spend">Monthly Ad Spend (USD)</label>
+    <input type="number" id="spend" placeholder="e.g. 20000" />
+  </div>
+
+  <div>
+    <label for="industry">Industry</label>
+    <select id="industry">
+      <option value="">-- Select Industry --</option>
+      <option value="ecommerce">E-commerce</option>
+      <option value="saas">SaaS</option>
+      <option value="info">Info/Education</option>
+      <option value="callfunnels">Call Funnels</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="platform">Primary Platform</label>
+    <select id="platform">
+      <option value="">-- Select Platform --</option>
+      <option value="meta">Meta Ads</option>
+      <option value="google">Google Ads</option>
+      <option value="tiktok">TikTok Ads</option>
+      <option value="youtube">YouTube Ads</option>
+    </select>
+  </div>
+
+  <button onclick="runAudit()">Calculate Wasted Ads Spend <img src="./assets/img-audit.png"> </button>
+</div>
+
+
+
+
+  <div id="loading">Calculating... Please wait</div>
+  <div class="results" id="results"></div>
+  
+
+ <script>
+
+
+function runAudit() {
+  const domain = document.getElementById('domain').value.trim();
+  const spend = parseFloat(document.getElementById('spend').value.trim());
+  const industry = document.getElementById('industry').value;
+  const platform = document.getElementById('platform').value;
+  const results = document.getElementById('results');
+  const loading = document.getElementById('loading');
+
+  results.innerHTML = '';
+
+  // if (!domain) {
+  //   alert("Please enter your website URL.");
+  //   return;
+  // }
+
+  if (!spend || spend <= 0) {
+    alert("Please enter a valid ad spend.");
+    return;
+  }
+
+  if (!industry) {
+    alert("Please select an industry.");
+    return;
+  }
+
+  if (!platform) {
+    alert("Please select a primary platform.");
+    return;
+  }
+
+  loading.style.display = 'block';
+
+  // Base waste
+  let baseWaste = spend < 50000 ? 0.30 : 0.20;
+
+  // Industry modifier
+  const industryModifiers = {
+    ecommerce: 0.00,
+    saas: -0.05,
+    info: 0.05,
+    callfunnels: 0.10
+  };
+
+  // Platform modifier
+  const platformModifiers = {
+    meta: 0.00,
+    google: 0.00,
+    tiktok: 0.05,
+    youtube: 0.05
+  };
+
+  const industryModifier = industryModifiers[industry] || 0;
+  const platformModifier = platformModifiers[platform] || 0;
+
+  const finalWasteRate = baseWaste + industryModifier + platformModifier;
+  console.log(finalWasteRate);
+  const estimatedWaste = spend * finalWasteRate;
+
+  setTimeout(() => {
+    loading.style.display = 'none';
+    results.innerHTML = `
+      <div class="card">
+        <div>
+          <h3>Estimated Waste</h3>
+          <strong>$${estimatedWaste.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})}</strong>
+        </div>
+      </div>
+      <div class="disc">
+        <h4>* This estimate is based on our analysis of 500+ audited accounts spanning $250M+ in managed spend. Your actual waste may be higher or lower depending on account structure, targeting efficiency, and creative performance. The only way to determine precise waste is through a comprehensive Growth Audit.</h4>
+      </div>
+    `;
+  }, 2000);
+}
+</script>
+
+  <div id="popup" style="
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 1rem;
+  box-sizing: border-box;
+">
+  <div style="
+    background: white;
+    color: #333;
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    font-size: 1rem;
+  ">
+    <p><strong>Estimate based on 500+ audited accounts.</strong> Actual waste varies. Comprehensive audit required for precise calculation.</p>
+    
+    <!-- Centered Button Wrapper -->
+    <div style="display: flex; justify-content: center; margin-top: 1.5rem;">
+      <button onclick="document.getElementById('popup').style.display='none'" style="
+        background-color: #2996C8;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        width: auto;
+        max-width: 80%;
+        text-align: center;
+      ">Got it</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
