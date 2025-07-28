@@ -6,12 +6,12 @@
   <title>Ad Spend Audit Tool</title>
   <link rel="shortcut icon" href="./assets/android-chrome-192x192.png" type="image/x-icon">
   <style>
-    body {
+    main {
       font-family: Arial, sans-serif;
       margin: 0 auto;
       padding: 0;
       /* background: linear-gradient(325deg, rgba(52, 184, 209, 1) 57%, rgba(39, 145, 199, 1) 93%); */
-      background-color: #34b7d1;
+      /* background-color: #34b7d1; */
       color: #fff;
       min-height: 100vh;
       display: flex;
@@ -20,16 +20,10 @@
       margin-top: 50px;
       max-width: 1200px;
     }
-    /* .unicc{
-      position: absolute;
-      right: 0;
-      z-index: -999;
+    body{
+       background-color: #34b7d1;
     }
-    .diam{
-      position: absolute;
-      left: 0;
-      z-index: -999;
-    } */
+  
 
     .unicc,
 .diam {
@@ -208,6 +202,9 @@ select {
   <div class="diam">
     <img src="./assets/diamond.png" alt="">
   </div>
+  <main>
+
+  
   <h1>Calculate Your Wasted Ads Spend</h1>
 
 
@@ -268,10 +265,10 @@ function runAudit() {
 
   results.innerHTML = '';
 
-  // if (!domain) {
-  //   alert("Please enter your website URL.");
-  //   return;
-  // }
+  if (!domain) {
+    alert("Please enter your website URL.");
+    return;
+  }
 
   if (!spend || spend <= 0) {
     alert("Please enter a valid ad spend.");
@@ -313,7 +310,6 @@ function runAudit() {
   const platformModifier = platformModifiers[platform] || 0;
 
   const finalWasteRate = baseWaste + industryModifier + platformModifier;
-  console.log(finalWasteRate);
   const estimatedWaste = spend * finalWasteRate;
 
   setTimeout(() => {
@@ -377,6 +373,6 @@ function runAudit() {
     </div>
   </div>
 </div>
-
+</main>
 </body>
 </html>
